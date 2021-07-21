@@ -9,5 +9,5 @@ Our goal for this week and project is to practice preforming text analysis in R 
 
 ## Collaborators
 We have an interdisciplinary team of researchers from the United States, Europe, and Canada. This week you will see:
-*Francine Mejia
-*Kathryn Smith
+- Francine Mejia
+- Kathryn Smith
