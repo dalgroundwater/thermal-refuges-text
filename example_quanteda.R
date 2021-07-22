@@ -1,7 +1,15 @@
 ##Text mining
 
 ##Load data 
-cp<- read.csv('coral_project.csv', stringsAsFactors = FALSE)
+###This code extracts text from pdf documents"
+
+library(pdftools)
+
+files <- list.files(path = 'C:/Users/kathr/OneDrive/Documents/thermal-refuges-text/data', pattern = "pdf$")
+
+opinions <- lapply(files, pdf_text)  ###The pdftools function for extracting text is pdf_text
+
+length(opinions)
 
 ##Cleaning text
 # Let's try a different R package to work with your data in dataframe format
