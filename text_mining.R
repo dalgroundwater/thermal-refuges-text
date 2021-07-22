@@ -43,9 +43,35 @@ dtm_words <- corp %>%
  # tm_map(stemDocument) %>% ### didn't use so words don't lose ending like temperature
   tm_map(removeWords, stopwords("english"))
 
+#dtmw <- tm_map(dtm_words,content_transformer(tolower)) #Error in .tolower(txt) : invalid input 'âˆ’ð‘ð‘í µy' in 'utf8towcs'
 
-dtmw <- DocumentTermMatrix(dtm_words)
-inspect(dtmw)  # checking what matrix looks like
+
+f <- content_transformer(function(x, pattern) gsub(pattern, "", x))
+dtm_words<- tm_map(dtm_words, f, "[!\"#$%&'*+,./)(:;<=>?@[\\^`{|}~]")
+
+
+
+
+
+dtm_words <- DocumentTermMatrix(dtm_words)
+inspect(dtm_words)  # checking what matrix looks like
+
+
+dtmd<- inspect (DocumentTermMatrix(corp, list(dictionary = c("temperature", "refugia", "coldwater", "salmonids", "refuge", "cold-water", "trout"))))
+
+
+dtmd2 <- dtmd %>%
+  cast_dtm(document, term, count)
+
+
+
+dttd <- tidy(dtmd)
+dictionarywords <- dttd %>%
+  group_by(term) %>%
+  summarise(
+    n = n(),
+    total = sum(count)) %>%
+  mutate(nchar = nchar(term))
 
 
 ##finding frequent terms to trim length of words
@@ -80,7 +106,7 @@ dtt_trimmed <- words %>%
 dtm_trimmed <- dtt_trimmed %>%
   cast_dtm(document, term, count)
 
-dtm_trimmed
+
 
 
 ### develop word associations with key words such temperatur and refugia  
@@ -91,6 +117,8 @@ word_assoc <- data.frame(
   word = names(word_assoc[[1]]),
   assoc = word_assoc,
   row.names = NULL)
+
+
 
 ###visualization of word association
 
