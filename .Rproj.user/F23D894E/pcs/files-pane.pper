@@ -1,0 +1,9 @@
+{
+    "path" : "~/thermal-refuges-text",
+    "sortOrder" : [
+        {
+            "ascending" : true,
+            "columnIndex" : 2
+        }
+    ]
+}
