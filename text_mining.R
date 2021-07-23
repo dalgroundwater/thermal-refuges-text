@@ -4,7 +4,7 @@
 
 
 #setwd('C:\\Users\\fmejia\\1_Francine\\1_Francine from C\\SESYNC\\SESYNC proposal coldwater refuges\\Data for class\\Oregon')
-
+working <-'C:\\Users\\fmejia\\1_Francine\\1_Francine from C\\SESYNC\\SESYNC proposal coldwater refuges\\Data for class\\Oregon'
 #getwd()
 
 install.packages("installr")
@@ -40,13 +40,12 @@ library("quanteda.textstats")
 
 
 library(tm)
-corp <- Corpus(URISource(files),
+corp <- VCorpus(DirSource(working),
                readerControl = list(reader = readPDF))
 summary(corp)
 
-
-
 pdf_corpus <- corpus(corp)
+
 
 summary(pdf_corpus)
 
