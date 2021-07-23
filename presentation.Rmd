@@ -43,8 +43,27 @@ library("quanteda.textplots")
 library("topicmodels")
 ```
 ---
-![Caption for the picture.](/path/to/image.png)
+# Thermal Refuges
 
+.pull-left[
+
+
+```{r, echo=FALSE,out.width = "400px"}
+knitr::include_graphics("thumbnail_DJI_0900.jpg")
+```
+]
+
+.pull-right[
+
+
+```{r, echo=FALSE,out.width = "400px"}
+knitr::include_graphics("thumbnail_IR_2021-06-30_0579.jpg")
+```
+]
+
+.footnote[
+Photo Credit: Martin Briggs, USGS
+]
 ---
 # Mini-project Goals
 The overall goals for this week:
@@ -157,7 +176,7 @@ wordsquant <- wordsquant %>%
 
 # Term Frequency
 .pull-left[
-Oregon
+Oregon:
 
 ```{r, echo = FALSE, fig.width=6, fig.align="left"}
 # Document-Term Matrix
@@ -174,13 +193,13 @@ ggplot(pdf_freq, aes(x = rank, y = frequency)) +
   theme(panel.border = element_rect(fill='NA', color='black'),
         axis.ticks = element_line(),
         legend.title = element_blank(), 
-        axis.title = element_text(size=14), 
-        axis.text = element_text(size=12, color = 'black'))
+        axis.title = element_text(size=16), 
+        axis.text = element_text(size=14, color = 'black'))
 ```
 ]
 
 .pull-right[
-New Brunswick
+New Brunswick:
 
 ```{r, echo = FALSE, fig.width=6, fig.align="right"}
 # Document-Term Matrix
@@ -197,26 +216,158 @@ ggplot(pdf_freq_nb, aes(x = rank, y = frequency)) +
   theme(panel.border = element_rect(fill='NA', color='black'),
         axis.ticks = element_line(),
         legend.title = element_blank(), 
-        axis.title = element_text(size=14), 
-        axis.text = element_text(size=12, color = 'black'))
+        axis.title = element_text(size=16), 
+        axis.text = element_text(size=14, color = 'black'))
 ```
 ]
 
 ---
 
-# Some Tips
+# Creating a Dictionary
 
+```r
+dict <- dictionary(list(temperature = c("temperatur*"),
+                        coldwater = c("cold*"), 
+                        salmonids = c("salmon*", "brown", 
+                              "cutthroat", "trout", "rainbow", 
+                              "bull", "atlantic", "brook"),
+                        refuge = c("refug*")))
+```
+```{r, include = FALSE}
+##creating your own dictionary
+dict <- dictionary(list(temperature = c("temperatur*"),
+                        coldwater = c("cold*"), 
+                        salmonids = c("salmon*", "brown", "cutthroat", "trout", "rainbow", "bull", "atlantic", "brook"),
+                        refuge = c("refug*")))
+```
+
+```{r}
+print(dict)
+```
+---
+
+# Frequency of Dictionary Terms
 
 .pull-left[
-An example using a leading:
+Oregon:
 
-This is invalid R code, so it is a plain fenced code block that is not executed.
+```{r, echo = FALSE}
+#Oregon
+#Get tokens
+toks <- tokens(wordsquant)
+##creating your own dictionary
+dict <- dictionary(list(temperature = c("temperatur*"),
+                        coldwater = c("cold*"), 
+                        salmonids = c("salmon*", "brown", "cutthroat", "trout", "rainbow", "bull", "atlantic", "brook"),
+                        refuge = c("refug*")))
+
+dict_toks <- tokens_lookup(toks, dictionary = dict)
+
+dfmat <- dfm(toks)
+
+dfmatdict <- dfm_lookup(dfmat, dictionary = dict, levels = 1)
+
+dfmatdict %>% 
+  textstat_frequency(n = 14) %>% 
+  ggplot(aes(x = reorder(feature, frequency), y = frequency)) +
+  geom_bar(stat="identity", width=0.2, color="steelblue", fill="steelblue")+
+  coord_flip() +
+  labs(x = NULL, y = "Frequency") +
+  theme_minimal() +
+    theme(panel.border = element_rect(fill='NA', color='black'),
+        axis.ticks = element_line(),
+        legend.title = element_blank(), 
+        axis.title = element_text(size=18), 
+        axis.text = element_text(size=18, color = 'black'))
+```
 ]
 
 .pull-right[
-An example using:
-It is valid R code so you can run it. Note that `{{}}` can wrap an R expression of multiple lines.
+New Brunswick:
+
+```{r, echo = FALSE}
+#New Brunswick
+#Get tokens
+toks_nb <- tokens(words)
+##creating your own dictionary
+dict <- dictionary(list(temperature = c("temperatur*"),
+                        coldwater = c("cold*"), 
+                        salmonids = c("salmon*", "brown", "cutthroat", "trout", "rainbow", "bull", "atlantic", "brook"),
+                        refuge = c("refug*")))
+
+dict_toks_nb <- tokens_lookup(toks_nb, dictionary = dict)
+
+dfmat_nb <- dfm(toks_nb)
+
+dfmatdict_nb <- dfm_lookup(dfmat_nb, dictionary = dict, levels = 1)
+
+dfmatdict_nb %>% 
+  textstat_frequency(n = 14) %>% 
+  ggplot(aes(x = reorder(feature, frequency), y = frequency)) +
+  geom_bar(stat="identity", width=0.2, color="#D32F2F", fill="#D32F2F")+
+  coord_flip() +
+  labs(x = NULL, y = "Frequency") +
+  theme_minimal() +
+    theme(panel.border = element_rect(fill='NA', color='black'),
+        axis.ticks = element_line(),
+        legend.title = element_blank(), 
+        axis.title = element_text(size=18), 
+        axis.text = element_text(size=18, color = 'black'))
+```
 ]
+
+---
+
+# Overall Wordcloud
+
+.pull-left[
+Oregon:
+```{r, echo = FALSE}
+#Oregon
+set.seed(132)
+textplot_wordcloud(dfmat)
+```
+]
+
+.pull-right[
+New Brunswick:
+```{r, echo = FALSE}
+#New Brunswick
+set.seed(132)
+textplot_wordcloud(dfmat_nb)
+```
+]
+---
+
+# Dictionary Wordcloud
+
+.pull-left[
+Oregon:
+```{r, echo = FALSE}
+#Oregon
+set.seed(132)
+textplot_wordcloud(dfmatdict)
+```
+
+]
+
+.pull-right[
+New Brunswick:
+```{r, echo = FALSE}
+#New Brunswick
+set.seed(132)
+textplot_wordcloud(dfmatdict_nb)
+```
+]
+---
+
+# Moving Forward!
+
+- Finetune our code;
+
+- Look into using "french" language for text mining for our France case study;
+
+- Apply our code to five other case studies;
 
 ---
 background-image: url(https://cyberhelp.sesync.org/syllabi/images/logo.png)

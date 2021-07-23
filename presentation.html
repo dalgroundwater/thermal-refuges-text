@@ -40,7 +40,24 @@ background-position: 50% 50%
 
 
 ---
+# Thermal Refuges
 
+.pull-left[
+
+
+&lt;img src="thumbnail_DJI_0900.jpg" width="400px" /&gt;
+]
+
+.pull-right[
+
+
+&lt;img src="thumbnail_IR_2021-06-30_0579.jpg" width="400px" /&gt;
+]
+
+.footnote[
+Photo Credit: Martin Briggs, USGS
+]
+---
 # Mini-project Goals
 The overall goals for this week:
 
@@ -48,8 +65,8 @@ The overall goals for this week:
 
 - Write a reproducible pipeline that can be applied to other case studies;
 
-<div id="htmlwidget-89473c498a9a92d8914b" style="width:100%;height:288px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-89473c498a9a92d8914b">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[43.698567,-120.674824,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addMarkers","args":[46.55781,-66.30639,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"setView":[[42.0285,-93.65],3.5,[]],"limits":{"lat":[43.698567,46.55781],"lng":[-120.674824,-66.30639]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-05bc2f9f2e6a6977b30d" style="width:100%;height:288px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-05bc2f9f2e6a6977b30d">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[43.698567,-120.674824,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addMarkers","args":[46.55781,-66.30639,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"setView":[[42.0285,-93.65],3.5,[]],"limits":{"lat":[43.698567,46.55781],"lng":[-120.674824,-66.30639]}},"evals":[],"jsHooks":[]}</script>
 ---
 
 # Reading in PDF Documents
@@ -110,32 +127,99 @@ wordsquant &lt;- wordsquant %&gt;%
 
 # Term Frequency
 .pull-left[
-Oregon
+Oregon:
 
-&lt;img src="presentation_files/figure-html/unnamed-chunk-7-1.png" style="display: block; margin: auto auto auto 0;" /&gt;
+&lt;img src="presentation_files/figure-html/unnamed-chunk-9-1.png" style="display: block; margin: auto auto auto 0;" /&gt;
 ]
 
 .pull-right[
-New Brunswick
+New Brunswick:
 
-&lt;img src="presentation_files/figure-html/unnamed-chunk-8-1.png" style="display: block; margin: auto 0 auto auto;" /&gt;
+&lt;img src="presentation_files/figure-html/unnamed-chunk-10-1.png" style="display: block; margin: auto 0 auto auto;" /&gt;
 ]
 
 ---
 
-# Some Tips
+# Creating a Dictionary
 
+```r
+dict &lt;- dictionary(list(temperature = c("temperatur*"),
+                        coldwater = c("cold*"), 
+                        salmonids = c("salmon*", "brown", 
+                              "cutthroat", "trout", "rainbow", 
+                              "bull", "atlantic", "brook"),
+                        refuge = c("refug*")))
+```
+
+
+
+```r
+print(dict)
+```
+
+```
+## Dictionary object with 4 key entries.
+## - [temperature]:
+##   - temperatur*
+## - [coldwater]:
+##   - cold*
+## - [salmonids]:
+##   - salmon*, brown, cutthroat, trout, rainbow, bull, atlantic, brook
+## - [refuge]:
+##   - refug*
+```
+---
+
+# Frequency of Dictionary Terms
 
 .pull-left[
-An example using a leading:
+Oregon:
 
-This is invalid R code, so it is a plain fenced code block that is not executed.
+![](presentation_files/figure-html/unnamed-chunk-13-1.png)&lt;!-- --&gt;
 ]
 
 .pull-right[
-An example using:
-It is valid R code so you can run it. Note that `{{}}` can wrap an R expression of multiple lines.
+New Brunswick:
+
+![](presentation_files/figure-html/unnamed-chunk-14-1.png)&lt;!-- --&gt;
 ]
+
+---
+
+# Overall Wordcloud
+
+.pull-left[
+Oregon:
+![](presentation_files/figure-html/unnamed-chunk-15-1.png)&lt;!-- --&gt;
+]
+
+.pull-right[
+New Brunswick:
+![](presentation_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
+]
+---
+
+# Dictionary Wordcloud
+
+.pull-left[
+Oregon:
+![](presentation_files/figure-html/unnamed-chunk-17-1.png)&lt;!-- --&gt;
+
+]
+
+.pull-right[
+New Brunswick:
+![](presentation_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
+]
+---
+
+# Moving Forward!
+
+- Finetune our code;
+
+- Look into using "french" language for text mining for our France case study;
+
+- Apply our code to five other case studies;
 
 ---
 background-image: url(https://cyberhelp.sesync.org/syllabi/images/logo.png)
